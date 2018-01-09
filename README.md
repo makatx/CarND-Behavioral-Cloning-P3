@@ -21,6 +21,7 @@ The goals / steps of this project are the following:
 [image5]: ./images/cnn-architecture.png "CNN Architecture"
 [image6]: ./images/recovery_dirt.jpg "Recovery, dirt"
 [image7]: ./images/center_img_flipped.jpg "Flipped Image"
+[image7]: ./images/loss6.png "Loss graph"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -65,11 +66,13 @@ Prior to feeding the images into the network, a 'Lambda' Keras layer is used nor
 
 The model was trained on data collected from the track driven forward and backwards to help it generalize better. Training data was also augumented by flipping to help further.
 
-The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track, in both directions.
 
 #### 3. Model parameter tuning
 
 The model used an adam optimizer, so the learning rate was not tuned manually.
+
+![image7]
 
 #### 4. Appropriate training data
 
