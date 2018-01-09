@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 from sklearn.utils import shuffle
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Conv2D, Flatten, Dense, Activation, MaxPooling2D, Lambda, Cropping2D
 
 ###################------------create and train model---------#################
@@ -29,28 +29,35 @@ def LeNet(train_generator, validation_generator, train_len, val_len, savefile="m
     model.save(savefile)
     return history
 
-def dave2(train_generator, validation_generator, train_len, val_len, savefile="model.h5"):
-    model = Sequential()
-    model.add(Cropping2D(((50,20), (0,0)), input_shape=(160, 320, 3)))
-    model.add(Lambda((lambda x: (x/255.0)-0.5)))
+def dave2(train_generator, validation_generator, train_len, val_len, savefile="model.h5", loadfile=False):
     
-    model.add(Conv2D(nb_filter=24, nb_col=5, nb_row=5, subsample=(2,2), activation='relu'))
-    model.add(Conv2D(nb_filter=36, nb_col=5, nb_row=5, subsample=(2,2), activation='relu'))
-    model.add(Conv2D(nb_filter=48, nb_col=5, nb_row=5, subsample=(2,2), activation='relu'))
-    model.add(Conv2D(nb_filter=64, nb_col=3, nb_row=3, activation='relu'))
-    model.add(Conv2D(nb_filter=64, nb_col=3, nb_row=3, activation='relu'))
+    if loadfile:
+        model = load_model(savefile)
+        
+    else:
+        
+        model = Sequential()
+        model.add(Cropping2D(((50,20), (0,0)), input_shape=(160, 320, 3)))
+        model.add(Lambda((lambda x: (x/255.0)-0.5)))
+        
+        model.add(Conv2D(nb_filter=24, nb_col=5, nb_row=5, subsample=(2,2), activation='relu'))
+        model.add(Conv2D(nb_filter=36, nb_col=5, nb_row=5, subsample=(2,2), activation='relu'))
+        model.add(Conv2D(nb_filter=48, nb_col=5, nb_row=5, subsample=(2,2), activation='relu'))
+        model.add(Conv2D(nb_filter=64, nb_col=3, nb_row=3, activation='relu'))
+        model.add(Conv2D(nb_filter=64, nb_col=3, nb_row=3, activation='relu'))
+        
+        model.add(Flatten())
+        model.add(Dense(1164, activation='relu'))
+        model.add(Dense(100, activation='relu'))
+        model.add(Dense(50, activation='relu'))
+        model.add(Dense(10, activation='relu'))
+        model.add(Dense(1))
+        
+        model.compile(loss='mse', optimizer='adam')
     
-    model.add(Flatten())
-    model.add(Dense(1164, activation='relu'))
-    model.add(Dense(100, activation='relu'))
-    model.add(Dense(50, activation='relu'))
-    model.add(Dense(10, activation='relu'))
-    model.add(Dense(1))
-    
-    model.compile(loss='mse', optimizer='adam')
     history = model.fit_generator(train_generator, samples_per_epoch=train_len, 
                                     validation_data=validation_generator, 
-                                    nb_val_samples=val_len, nb_epoch=7)
+                                    nb_val_samples=val_len, nb_epoch=5)
     
     model.save(savefile)
     return history
@@ -120,5 +127,5 @@ train_generator = generator(train_samples, batch_size=128)
 validation_generator = generator(validation_samples, batch_size=128)
 
 history = dave2(train_generator, validation_generator, len(train_samples)*2, 
-                len(validation_samples)*2, savefile="model_dave2_track2.h5")
+                len(validation_samples)*2, savefile="model.h5", loadfile=False)
 plot_history(history)
