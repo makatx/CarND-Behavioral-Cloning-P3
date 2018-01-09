@@ -21,7 +21,7 @@ The goals / steps of this project are the following:
 [image5]: ./images/cnn-architecture.png "CNN Architecture"
 [image6]: ./images/recovery_dirt.jpg "Recovery, dirt"
 [image7]: ./images/center_img_flipped.jpg "Flipped Image"
-[image7]: ./images/loss6.png "Loss graph"
+[image8]: ./images/loss6.png "Loss graph"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -72,7 +72,7 @@ The model was tested by running it through the simulator and ensuring that the v
 
 The model used an adam optimizer, so the learning rate was not tuned manually.
 
-![image7]
+![image8]
 
 #### 4. Appropriate training data
 
